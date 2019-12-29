@@ -1,0 +1,99 @@
+﻿@using Microsoft.AspNetCore.Http;
+
+@model IEnumerable<MemesPortal.Models.Memes>
+
+@{
+    ViewData["Title"] = "Strona Główna";
+    int a;
+    int count = 0;
+    var OwnLikes = Model.Where(u => u.Users.UserId == @Context.Session.GetInt32("UserID"));
+    var LikeImage = "~/images/like.svg";
+    var DislikeImage = "~/images/Dislike.svg";
+
+    String page = Context.Request.Query["page"].ToString();
+    int pageint;
+    if (page == "" || page == "1")
+    {
+        pageint = 0;
+        a = 1;
+    }
+    else
+    {
+        pageint = Convert.ToInt32(page) - 1;
+        a = (pageint * 100) + 1;
+    }
+
+}
+
+<h2>Strona Główna</h2>
+
+<nav>
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>
+
+<table class="table table">
+    @foreach (var item in Model)
+    {
+        count = item.Likes.Where(l => l.MemesID == item.MemesId).Count();
+        <tr class="border-top-0">
+            <td rowspan="2" class="col-md-1">
+                @a
+                @if (@Context.Session.GetInt32("UserID") != null)
+                {
+                    @if (!OwnLikes.Contains(item))
+                    {
+                        @if (item.Likes.Where(l => l.MemesID == item.MemesId).Where(u => u.UserID == @Context.Session.GetInt32("UserID")).Any())
+                        {
+                            <form asp-controller="Likes" asp-action="Like" asp-route-id="@Html.ValueFor(modelItem => item.MemesId)" data-ajax="true">
+                                <input type="image" src="@Url.Content(DislikeImage)" height="32" width="32" alt="Dislike" onclick="return SetImage(this)" value="dislike">
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Likes" asp-action="Like" asp-route-id="@Html.ValueFor(modelItem => item.MemesId)" data-ajax="true">
+                                <input type="image" src="@Url.Content(LikeImage)" height="32" width="32" alt="Like" onclick="return SetImage(this)" value="like">
+                            </form>
+                        }
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+                (<a href="#collapseExample"> @Html.DisplayFor(modelItem => item.Link) </a>)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @count
+                Lajków, Dodano:
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+        </tr>
+        a++;
+    }
+</table>
+
+<nav>
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>
+
+<nav>
+    <vc:pager paging-list="@Model" />
+</nav>
+<img src="@Url.Content(LikeImage)" alt="" height="0" width="0" />
+<img src="@Url.Content(DislikeImage)" alt="" height="0" width="0" />
+
+
+<script type="text/javascript">
+    function SetImage(btn) {
+        if (btn.value == "like") {
+            btn.value = "dislike";
+            btn.setAttribute("src", '@Url.Content("~/images/Dislike.svg")');
+        }
+        else if (btn.value == "dislike") {
+            btn.value = "like";
+            btn.setAttribute("src", '@Url.Content("~/images/like.svg")');
+        }
+        return true;
+    }
+</script>

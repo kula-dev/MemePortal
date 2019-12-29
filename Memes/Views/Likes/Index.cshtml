@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MemesPortal.Models.Likes>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Memes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Users)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Memes.Link)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Users.Email)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.LikeId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LikeId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LikeId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

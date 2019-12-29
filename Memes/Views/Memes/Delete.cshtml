@@ -1,0 +1,43 @@
+﻿@model MemesPortal.Models.Memes
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<h2>Usuwanie linków</h2>
+<h3>Jestem pewne, że chcesz usunąć ten link?</h3>
+<div>
+    <h4>Link</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Nazwa:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            Link:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Link)
+        </dd>
+        <dt>
+            Data dodania:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt>
+            Użytkownik:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Users.Email)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="MemesId" />
+        <input type="submit" value="Usuń" class="btn btn-default" /> |
+        <a asp-controller="Users" asp-action="Index">Wróć do panelu</a>
+    </form>
+</div>

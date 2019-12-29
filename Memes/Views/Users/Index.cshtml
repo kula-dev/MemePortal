@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Http;
+
+@model IEnumerable<MemesPortal.Models.Memes>
+
+@{
+    ViewData["Title"] = "Panel użytkownika";
+    var a = 1;
+    int count = 0;
+}
+
+<h2>Panel użytkownika @Context.Session.GetString("UserEmail")</h2>
+
+<p>
+    <a asp-controller="Memes" asp-action="Create">Dodaj nowy link</a>
+</p>
+
+<nav>
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>
+
+<table class="table">
+    @foreach (var item in Model)
+    {
+        count = item.Likes.Where(l => l.MemesID == item.MemesId).Count();
+        <tr>
+            <td rowspan="2" class="col-md-2">
+                @a
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+                <a href="#collapseExample"> @Html.DisplayFor(modelItem => item.Link) </a> |
+                <a asp-controller="Links" asp-action="Edit" asp-route-id="@item.MemesId">Edytuj</a> |
+                <a asp-controller="Links" asp-action="Delete" asp-route-id="@item.MemesId">Usuń</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @count
+                Lajków, Dodano:
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+        </tr>
+        a++;
+    }
+</table>
+
+<nav>
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>
