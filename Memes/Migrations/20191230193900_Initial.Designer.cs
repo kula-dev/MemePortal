@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MemesPortal.Migrations
 {
     [DbContext(typeof(MemesDB))]
-    [Migration("20191217172327_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20191230193900_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,7 +48,7 @@ namespace MemesPortal.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("Link")
+                    b.Property<byte[]>("Image")
                         .IsRequired();
 
                     b.Property<string>("Name")
@@ -85,7 +85,7 @@ namespace MemesPortal.Migrations
 
             modelBuilder.Entity("MemesPortal.Models.Likes", b =>
                 {
-                    b.HasOne("MemesPortal.Models.Memes", "Links")
+                    b.HasOne("MemesPortal.Models.Memes", "Memes")
                         .WithMany("Likes")
                         .HasForeignKey("MemesID")
                         .OnDelete(DeleteBehavior.Cascade);

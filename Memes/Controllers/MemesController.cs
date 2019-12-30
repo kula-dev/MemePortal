@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MemesPortal.Models;
 using Microsoft.AspNetCore.Http;
 using ReflectionIT.Mvc.Paging;
+using System.IO;
 
 namespace MemesPortal.Controllers
 {
@@ -27,10 +28,16 @@ namespace MemesPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MemesId,Name,Link,Date,UserId")] Memes memes)
+        public async Task<IActionResult> Create([Bind("MemesId,Name,Image,Date,UserId")] Memes memes, IFormFile Image)
         {
             if (ModelState.IsValid)
             {
+                using (var ms = new MemoryStream())
+                {
+                    Image.CopyTo(ms);
+                    memes.Image = ms.ToArray();
+                }
+
                 memes.Date = DateTime.Now;
                 memes.UserId = (int)HttpContext.Session.GetInt32("UserID");
                 _context.Add(memes);

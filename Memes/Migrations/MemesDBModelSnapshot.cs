@@ -46,7 +46,7 @@ namespace MemesPortal.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("Link")
+                    b.Property<byte[]>("Image")
                         .IsRequired();
 
                     b.Property<string>("Name")
@@ -83,7 +83,7 @@ namespace MemesPortal.Migrations
 
             modelBuilder.Entity("MemesPortal.Models.Likes", b =>
                 {
-                    b.HasOne("MemesPortal.Models.Memes", "Links")
+                    b.HasOne("MemesPortal.Models.Memes", "Memes")
                         .WithMany("Likes")
                         .HasForeignKey("MemesID")
                         .OnDelete(DeleteBehavior.Cascade);

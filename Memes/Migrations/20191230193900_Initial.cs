@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MemesPortal.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,7 +29,7 @@ namespace MemesPortal.Migrations
                     MemesId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: false),
-                    Link = table.Column<string>(nullable: false),
+                    Image = table.Column<byte[]>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },
