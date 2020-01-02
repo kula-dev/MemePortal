@@ -29,8 +29,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
                 <img class="img-responsive full-width" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Image)" />|
-                <a asp-controller="Links" asp-action="Edit" asp-route-id="@item.MemesId">Edytuj</a> |
-                <a asp-controller="Links" asp-action="Delete" asp-route-id="@item.MemesId">Usuń</a>
+                <a asp-controller="Memes" asp-action="Edit" asp-route-id="@item.MemesId">Edytuj</a> |
+                <a asp-controller="Memes" asp-action="Delete" asp-route-id="@item.MemesId">Usuń</a>
             </td>
         </tr>
         <tr>
