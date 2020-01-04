@@ -16,10 +16,11 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
-            Link:
+            Zdjęcie:
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Image)
+            @*@Html.DisplayFor(model => model.Image)*@
+            <img class="img-responsive full-width" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Image)" />|
         </dd>
         <dt>
             Data dodania:
