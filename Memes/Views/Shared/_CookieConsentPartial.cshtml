@@ -9,33 +9,55 @@
 @if (showBanner)
 {
     <nav id="cookieConsent" class="navbar navbar-default navbar-fixed-top" role="alert">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#cookieConsent .navbar-collapse">
-                    <span class="sr-only">Toggle cookie consent banner</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <span class="navbar-brand"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></span>
+        <div class="collapse navbar-collapse">
+            <p class="navbar-text">
+                Polityka Prywatności.
+            </p>
+            <div class="navbar-btn">
+                @(Html.Kendo().Button()
+                    .Name("showDialogBtn")
+                    .HtmlAttributes(new { style = "display:none;", @class = "k-button hidden-on-narrow" })
+                    .Content("Kliknij aby otworzyć")
+                    .Events(ev => ev.Click("showDialog"))
+                )
             </div>
-            <div class="collapse navbar-collapse">
-                <p class="navbar-text">
-                    Use this space to summarize your privacy and cookie use policy.
-                </p>
-                <div class="navbar-right">
-                    <a asp-controller="Home" asp-action="Privacy" class="btn btn-info navbar-btn">Learn More</a>
-                    <button type="button" class="btn btn-default navbar-btn" data-cookie-string="@cookieString">Accept</button>
-                </div>
-            </div>
+            @(Html.Kendo().Dialog()
+                .Name("dialog")
+                .Title("Polityka Prywatności")
+                .Content("<p>Czy akceptujesz naszą politykę prywatności?<p>")
+                .Width(400)
+                .Modal(false)
+                .Actions(actions =>
+                {
+                    actions.Add().Text("Pokaz wiecej").Action("onShow");
+                    actions.Add().Text("Akceptuj polityke prywatnosci").Primary(true).Action("onOK");
+                })
+                .Events(ev => ev.Close("onClose").Open("onOpen"))
+            )
         </div>
     </nav>
     <script>
-        (function () {
-            document.querySelector("#cookieConsent button[data-cookie-string]").addEventListener("click", function (el) {
-                document.cookie = el.target.dataset.cookieString;
-                document.querySelector("#cookieConsent").classList.add("hidden");
-            }, false);
-        })();
+        function onClose() {
+            $("#showDialogBtn").fadeIn();
+        }
+
+        function onOpen() {
+            $("#showDialogBtn").fadeOut();
+        }
+
+        function showDialog() {
+            $('#dialog').data("kendoDialog").open();
+        }
+        function onShow(e) {
+            window.location.href = '/Home/Privacy/';
+        }
+        function onOK(e) {
+            document.cookie = '@cookieString';
+        }
     </script>
 }
+
+
+
+
+
