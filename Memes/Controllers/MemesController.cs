@@ -32,11 +32,24 @@ namespace MemesPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var ms = new MemoryStream())
+                string filename = Path.GetFileName(Image.FileName);
+                string extension = Path.GetExtension(filename);
+                string[] extensions = new string[] { ".jpg", ".png" };
+                if (extensions.Contains(extension))
                 {
-                    Image.CopyTo(ms);
-                    memes.Image = ms.ToArray();
+                    using (var ms = new MemoryStream())
+                    {
+                        Image.CopyTo(ms);
+                        memes.Image = ms.ToArray();
+                    }
                 }
+                else
+                {
+                    ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", memes.UserId);
+                    //await Response.WriteAsync("This is Invalid Extension File");
+                    return View();
+                }
+                
 
                 memes.Date = DateTime.Now;
                 memes.UserId = (int)HttpContext.Session.GetInt32("UserID");
@@ -78,10 +91,21 @@ namespace MemesPortal.Controllers
             {
                 try
                 {
-                    using (var ms = new MemoryStream())
+                    string filename = Path.GetFileName(Image.FileName);
+                    string extension = Path.GetExtension(filename);
+                    string[] extensions = new string[] { ".jpg", ".png" };
+                    if (extensions.Contains(extension))
                     {
-                        Image.CopyTo(ms);
-                        memes.Image = ms.ToArray();
+                        using (var ms = new MemoryStream())
+                        {
+                            Image.CopyTo(ms);
+                            memes.Image = ms.ToArray();
+                        }
+                    }
+                    else
+                    {
+                        ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", memes.UserId);
+                        return View(memes);
                     }
                     _context.Update(memes);
                     await _context.SaveChangesAsync();
