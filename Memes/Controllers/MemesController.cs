@@ -42,7 +42,7 @@ namespace MemesPortal.Controllers
                 memes.UserId = (int)HttpContext.Session.GetInt32("UserID");
                 _context.Add(memes);
                 await _context.SaveChangesAsync();
-                ViewBag.MessageMemesAdd = "Link dodany to agregatora!";
+                ViewBag.MessageMemesAdd = "Mem dodany!";
                 return View();
             }
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", memes.UserId);
@@ -67,7 +67,7 @@ namespace MemesPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MemesId,Name,Link,Date,UserId")] Memes memes)
+        public async Task<IActionResult> Edit(int id, [Bind("MemesId,Name,Image,Date,UserId")] Memes memes, IFormFile Image)
         {
             if (id != memes.MemesId)
             {
@@ -78,6 +78,11 @@ namespace MemesPortal.Controllers
             {
                 try
                 {
+                    using (var ms = new MemoryStream())
+                    {
+                        Image.CopyTo(ms);
+                        memes.Image = ms.ToArray();
+                    }
                     _context.Update(memes);
                     await _context.SaveChangesAsync();
                 }

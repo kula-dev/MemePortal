@@ -6,54 +6,81 @@
 
 <h2>Kontakt</h2>
 
-<div class="demo-section">
-    <h3>E-mail</h3>
-    @(
-                 Html.Kendo().QRCode()
-                    .Name("qrMail")
-                    .Value("mailto:clientservice@telerik.com")
-                    .Color("#e15613")
-                    .Background("transparent")
-                    .Size(120)
-    )
-</div>
-<div class="demo-section">
-    <h3>URL</h3>
-    @(
-                Html.Kendo().QRCode()
-                    .Name("qrUrl")
-                    .Value("http://demos.telerik.com/kendo-ui/dataviz/overview/index.html")
-                    .ErrorCorrection(QRErrorCorrectionLevel.M)
-                    .Size(120)
-                    .Border(border => border.Color("#000000").Width(5))
-    )
-</div>
-<div class="demo-section">
-    <h3>Telephone</h3>
-    @(
-                Html.Kendo().QRCode()
-                    .Name("qrTelephone")
-                    .Value("tel:+1-888-365-2779")
-                    .ErrorCorrection(QRErrorCorrectionLevel.Q)
-                    .Size(120)
-                    .Color("#67a814")
-                    .Border(border => border.Color("#67a814").Width(5))
-    )
-</div>
-<div class="demo-section">
-    <h3>Geo Location</h3>
-    @(
-                Html.Kendo().QRCode()
-                    .Name("qrGeoLocation")
-                    .Value("geo:42.65049,23.37925,100")
-                    .ErrorCorrection(QRErrorCorrectionLevel.H)
-                    .Size(120)
-                    .Color("#166a83")
-    )
+<div class="container">
+    <div class="row">
+        <div class="section">
+            <h3>E-mail</h3>
+            @(
+                                         Html.Kendo().QRCode()
+                                            .Name("qrMail")
+                                            .Value("mailto:dominik.kulesza@op.pl")
+                                            .Color("#e15613")
+                                            .Background("transparent")
+                                            .Size(120)
+            )
+        </div>
+        <div class="section">
+            <h3>Adres URL</h3>
+            @(
+                                        Html.Kendo().QRCode()
+                                            .Name("qrUrl")
+                                            .Value("http://demos.telerik.com/kendo-ui/dataviz/overview/index.html")
+                                            .ErrorCorrection(QRErrorCorrectionLevel.M)
+                                            .Size(120)
+                                            .Border(border => border.Color("#000000").Width(5))
+            )
+        </div>
+        <div class="section">
+            <h3>Telefon</h3>
+            @(
+                                        Html.Kendo().QRCode()
+                                            .Name("qrTelephone")
+                                            .Value("tel:574-217-938")
+                                            .ErrorCorrection(QRErrorCorrectionLevel.Q)
+                                            .Size(120)
+                                            .Color("#67a814")
+                                            .Border(border => border.Color("#67a814").Width(5))
+            )
+        </div>
+        <div class="section">
+            <h3>Geo-lokalizacja</h3>
+            @(
+                                        Html.Kendo().QRCode()
+                                            .Name("qrGeoLocation")
+                                            .Value("geo:53.1320843,23.1593308,18")
+                                            .ErrorCorrection(QRErrorCorrectionLevel.H)
+                                            .Size(120)
+                                            .Color("#166a83")
+            )
+        </div>
+    </div>
+    <div class="row">
+        <h3>Mapa</h3>
+        @(Html.Kendo().Map()
+                    .Name("map")
+                    .Center(53.1320843, 23.1593308)
+                    .Zoom(3)
+                    .Layers(layers =>
+                    {
+                        layers.Add()
+                            .Type(MapLayerType.Tile)
+                            .UrlTemplate("http://#= subdomain #.tile.openstreetmap.org/#= zoom #/#= x #/#= y #.png")
+                            .Subdomains("a", "b", "c")
+                            .Attribution("&copy; <a href='http://osm.org/copyright'>OpenStreetMap contributors</a>");
+                    })
+                    .Markers(markers =>
+                    {
+                        markers.Add()
+                            .Location(53.1320843, 23.1593308)
+                            .Shape(MapMarkersShape.PinTarget)
+                            .Tooltip(tooltip => tooltip.Content("Białystok, Rynek"));
+                    })
+        )
+    </div>
 </div>
 
 <style>
-    .demo-section {
+    .section {
         display: inline-block;
         margin: 17px;
     }

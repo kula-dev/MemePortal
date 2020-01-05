@@ -22,7 +22,7 @@ namespace MemesPortal.Controllers
         public async Task<IActionResult> Index(int page = 1)
         {
             var linkAggregator = _context.Memes.Include(l => l.Users).Include(l => l.Likes)
-                .Where(d => d.Date >= DateTime.Now.AddDays(-5))
+                .Where(d => d.Date >= DateTime.Now.AddDays(-50))
                 .OrderByDescending(o => o.Likes.Where(l => l.MemesID == o.MemesId).Count());
                 
             return View(await PagingList.CreateAsync(linkAggregator, 100, page));
